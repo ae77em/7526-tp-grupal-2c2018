@@ -21,9 +21,6 @@ for i in range(100):
    
    u.append( i ) 
    v.append( x_n ) 
-   
-   print i
-   print x_n
 
 trace = go.Scatter(
     x = u,
