@@ -30,7 +30,7 @@ def generar_histograma(numeros_aleatorios):
 
     fig = plt.gcf()
     plotly_fig = tls.mpl_to_plotly( fig )
-    py.iplot(plotly_fig, filename='histograma-gcl')
+    py.plot(plotly_fig, filename='histograma-gcl')
 
 ## resolucion de histograma
 x_n = (90697 + 89563) // 2
