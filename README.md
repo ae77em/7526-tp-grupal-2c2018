@@ -1,38 +1,41 @@
 # 7526-tp-grupal-2c2018
 Resolución de trabajo práctico grupal de Simulación - FIUBA - 2c2018
 
-# Setup (Ubuntu)(*)
+# Setup (Ubuntu)
 
-* Instalar pip
+## 1º Instalar pip
 
 `sudo apt install python-pip`
+
 `sudo python -m pip install --upgrade pip setuptools wheel`
 
-* Instalar pylint
+## 2º Instalar librerías necesarias en el ambiente del usuario (*)
+
+* pylint
 
 `python -m pip install -U "pylint<2.0.0" --user`
 
-* Instalar matplotlib
+* matplotlib
 
 `python -m pip install -U matplotlib --user`
 
-* Instalar python-tk
+* python-tk
 
 `python -m pip install -U python-tk --user`
 
-* Instalar plotly
+* plotly
 
 `python -m pip install plotly --user`
 
-* Instalar rope
+* rope
 
 `python -m pip install -U rope --user`
 
-* Instalar autopep8
+* autopep8
 
 `python -m pip install -U autopep8 --user`
 
-* Instalar scipy
+* scipy
 
 `python -m pip install scipy`
 
