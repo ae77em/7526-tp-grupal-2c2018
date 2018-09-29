@@ -27,6 +27,8 @@ Resolución de trabajo práctico grupal de Simulación - FIUBA - 2c2018
 
 `python -m pip install plotly --user`
 
+Ver [guía de uso](https://plot.ly/python/getting-started/) 
+
 * rope
 
 `python -m pip install -U rope --user`
