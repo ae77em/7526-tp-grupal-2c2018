@@ -37,4 +37,4 @@ for i in range(len(u)):
 
 # Mostramos histograma del resultado
 data = [go.Histogram(x=x)]
-py.iplot(data, filename='histograma-inversa')
+py.plot(data, filename='histograma-inversa')
