@@ -41,4 +41,8 @@ Ver [guía de uso](https://plot.ly/python/getting-started/)
 
 `python -m pip install scipy`
 
+* pandas
+
+`python -m pip install pandas --user`
+
 (*) La opción `--user` indica que se instala para el usuario actual. Me daba problemas usando el IDE cuando instalaba cosas como super user.

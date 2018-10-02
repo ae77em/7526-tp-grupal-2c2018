@@ -13,14 +13,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ## funciones auxiliares
-def generador_congruencial_lineal(x_n):
-    m = 232                     # modulus
-    a = 1013904223              # multiplier
-    c = 1664525                 # increment
 
-    x = float(((a * x_n) + c) % m) / float(m)
+def newmethod480():
+    def generador_congruencial_lineal(x_n):
+        m = 232                     # modulus
+        a = 1013904223              # multiplier
+        c = 1664525                 # increment
 
-    return x
+        x = float(((a * x_n) + c) % m) / float(m)
+
+        return x
+    return generador_congruencial_lineal
+
+generador_congruencial_lineal = newmethod480()
 
 def generar_histograma(numeros_aleatorios):
     plt.hist(numeros_aleatorios)
@@ -30,7 +35,7 @@ def generar_histograma(numeros_aleatorios):
 
     fig = plt.gcf()
     plotly_fig = tls.mpl_to_plotly( fig )
-    py.iplot(plotly_fig, filename='histograma-gcl')
+    py.plot(plotly_fig, filename='histograma-gcl')
 
 ## resolucion de histograma
 x_n = (90697 + 89563) // 2
