@@ -2,15 +2,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
-
-def generador_congruencial_lineal(x_n, k):
-    m = 232                     # modulus
-    a = 1013904223              # multiplier
-    c = 1664525                 # increment
-
-    x = float(((a * x_n) + c - k*m) % m) / float(m)
-
-    return x
+from generador_congruencial_lineal import generador_congruencial_lineal
 
 x_n = (90697 + 89563) // 2
 t = []  # array de cantidad
@@ -18,13 +10,13 @@ u = []  # array de cantidad
 v = []  # array de nro generado
 
 for i in range(100000):
-   x_n = generador_congruencial_lineal(x_n,1)
-   x_n2 = generador_congruencial_lineal(x_n,2)
-   x_n3 = generador_congruencial_lineal(x_n,3)
-   
-   t.append( x_n ) 
-   u.append( x_n2 ) 
-   v.append( x_n3 ) 
+    x_n = generador_congruencial_lineal(x_n, k=1)
+    x_n2 = generador_congruencial_lineal(x_n, k=2)
+    x_n3 = generador_congruencial_lineal(x_n, k=3)
+
+    t.append(x_n)
+    u.append(x_n2)
+    v.append(x_n3)
 
 trace = go.Scatter3d(
     x=t, y=u, z=v,
@@ -77,8 +69,8 @@ layout = dict(
                 z=0.7100,
             )
         ),
-        aspectratio = dict( x=1, y=1, z=0.7 ),
-        aspectmode = 'manual'
+        aspectratio=dict(x=1, y=1, z=0.7),
+        aspectmode='manual'
     ),
 )
 
