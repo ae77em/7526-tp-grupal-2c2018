@@ -15,9 +15,6 @@ def funcionH(unNro):
 
     return exp(result)
 
-# funciones auxiliares
-
-
 def generador_aceptacion_rechazon_variable_normal():
     U = 0
     count = 0
@@ -73,8 +70,10 @@ for _ in range(cantidadMuestras):
     x_n = generador_aceptacion_rechazon_variable_normal()
     muestra.append(x_n)
 
+#ordeno las muestras de menor a mayor
 muestra.sort()
 
+#busco maxima distancia
 maximaDist = encontrar_max_distancia()
 
 print("max x hallado -->  | F(x) - F(x) |: {0} ".format(maximaDist))

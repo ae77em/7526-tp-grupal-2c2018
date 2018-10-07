@@ -4,7 +4,9 @@ import random
 
 from math import log
 from math import exp
+import scipy.stats as stats
 
+cant = 100000
 
 def generador_congruencial_lineal(x_n):
     m = 232                     # modulus
@@ -16,49 +18,32 @@ def generador_congruencial_lineal(x_n):
     return x
 
 def calcularEst(Oi,Ei):
-
-    return ( pow( Oi - Ei ,2) ) / float(Ei)
+    if Ei == 0:
+        return 0
+    return ( ( ( Oi - Ei )**2 ) ) / (Ei)
 
 def obtenerProbabilidadDeGap(nroDeGap):
-
-    return (0.8)*pow(0.2,nroDeGap)
+    return (0.5)*pow(0.5,nroDeGap)*cant
 
 
 x_n = (90697 + 89563) // 2
 
 gapsPrimerIntervalo = []  # array de nro generado
-contadorPrimerIntervalo = 0
+contadorGap = 0
 aparecioPrimerNroEnPrimerRango = False
 
-gapsSegundoIntervalo = []  # array de nro generado
-contadorSegundoIntervalo = 0
-aparecioPrimerNroEnSegundoRango = False
+i = 1
 
-for i in range(30):
+while i < cant:
     x_n = generador_congruencial_lineal(x_n)
 
-    if x_n >= 0.2 and x_n <= 0.6:
-        if aparecioPrimerNroEnPrimerRango == False:
-            aparecioPrimerNroEnPrimerRango = True
-        else:
-            contadorPrimerIntervalo -= 1
-            gapsPrimerIntervalo.append(contadorPrimerIntervalo)
-            contadorPrimerIntervalo = 0
-
     if x_n >= 0.5 and x_n <= 1:
-        if aparecioPrimerNroEnSegundoRango == False:
-            aparecioPrimerNroEnSegundoRango = True
-        else:
-            contadorSegundoIntervalo -= 1
-            gapsSegundoIntervalo.append(contadorSegundoIntervalo)
-            contadorSegundoIntervalo = 0
+        gapsPrimerIntervalo.append(contadorGap)
+        contadorGap = 0
+        i += 1
+    else:
+        contadorGap += 1
 
-    #si aparecio por primera vez, va incrementandose hasta q se resetea
-    if aparecioPrimerNroEnPrimerRango == True:
-        contadorPrimerIntervalo += 1
-
-    if aparecioPrimerNroEnSegundoRango == True:
-        contadorSegundoIntervalo += 1
 
 maxGap = 0
 totalGap = 0
@@ -73,42 +58,38 @@ for unGap in gapsPrimerIntervalo:
     if maxGap < unGap:
         maxGap = unGap
 
-for unGap in gapsSegundoIntervalo:
-    if str(unGap) in counters:
-        counters[str(unGap)] = counters[str(unGap)] + 1
-    else:
-        counters[str(unGap)] = 1
-
-    if maxGap < unGap:
-        maxGap = unGap
-
-
 #creo array del contenido como tantos gaps existan
 contadorGaps = [0] * (maxGap + 1)
 
-#sort gaps de menor a mayor
+#creo array para valores esperados
+valoresEsperados = [0] * (maxGap + 1)
+
 for key, value in counters.iteritems():
     contadorGaps[int(key)] = value
-    totalGap += value
 
-print "TOTAL GAPS"
-print totalGap
+for i in range(0,maxGap-1):
+    valoresEsperados[i] = obtenerProbabilidadDeGap(i)
+
+print "MAX GAPS"
+print maxGap
+
 print ""
 print "GAPS"
 print contadorGaps
+print ""
+print "valores esperados"
+print valoresEsperados
 
-print("i" ,"p","Oi","Ei")
-sumar = 0
+Dsquared = 0
+
 for key, value in enumerate(contadorGaps):
-    probabilidadDeGap = obtenerProbabilidadDeGap(key)
-    Ei = probabilidadDeGap * totalGap
+    Ei = valoresEsperados[key]
     Oi = value
 
-    sumar += Ei
+    print(key ,value,valoresEsperados[key], calcularEst(Oi,Ei))
+    Dsquared += calcularEst(Oi,Ei)
 
-    print(key ,probabilidadDeGap,Oi,Ei, calcularEst(Oi,Ei))
+t = stats.chi2.ppf(q=0.95, df=1)
 
-print ""
-print "SUM Ei"
-print sumar
-
+print ("resultado de la chi 2 --> t: ",t)
+print ("D2 : ",Dsquared)

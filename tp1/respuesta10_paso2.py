@@ -55,6 +55,8 @@ for _ in range(cantidadMuestras):
 muestra.sort()
 
 for indice, unaMuestra in enumerate(muestra, start=1):
+    if unaMuestra < 0:
+        print unaMuestra
     x.append( unaMuestra )
     yEmpirica.append( indice/float(cantidadMuestras) )
     yReal.append( funcionDistribucionNormal.cdf( unaMuestra ) )

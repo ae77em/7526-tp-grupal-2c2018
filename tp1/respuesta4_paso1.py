@@ -13,7 +13,6 @@ def funcionH(unNro):
 # funciones auxiliares
 def generador_aceptacion_rechazon_variable_normal():
     U = 0
-    count = 0
     continuar = True
 
     while( continuar ):
@@ -21,28 +20,20 @@ def generador_aceptacion_rechazon_variable_normal():
 
         U = random.uniform(0, 1) 
 
-        count = count + 1
-
-        print "intento de busqueda jajjaja"
-        print count
-
-        if U <= funcionH( Y ):
+        if U <= funcionH( Y ): #si el resultado es mayor a la uniforme, la variable Y se toma, sino se rechaza
             continuar = False
             
-    if U < 0.5:
+    if U < 0.5: #por simetria de la imagen de la normal
         return 5*Y + 35
     else:
         return 5*Y*-1 + 35
 
-# Paso 1: Generamos muestras de la variable uniforme U
-u = []  # array de uniformes
+u = []  # array de normales
 
 for _ in range(100000):
     x_n = generador_aceptacion_rechazon_variable_normal()
     u.append(x_n)
-    print "Variable generada"
-    print x_n
 
 # Mostramos histograma del resultado
 data = [go.Histogram(x=u)]
-py.plot(data, filename='histograma-inversa')
+py.plot(data, filename='histograma-normal')
