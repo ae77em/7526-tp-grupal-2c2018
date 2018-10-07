@@ -5,23 +5,28 @@ import numpy as np
 from generador_congruencial_lineal import generador_congruencial_lineal
 
 x_n = (90697 + 89563) // 2
-t = []  # array de cantidad
-u = []  # array de cantidad
-v = []  # array de nro generado
+u = []  
+v = []  
+w = []
+k = 0
 
 for i in range(100000):
-    x_n = generador_congruencial_lineal(x_n, k=1)
-    x_n2 = generador_congruencial_lineal(x_n, k=2)
-    x_n3 = generador_congruencial_lineal(x_n, k=3)
-
-    t.append(x_n)
-    u.append(x_n2)
-    v.append(x_n3)
+    x_n = generador_congruencial_lineal(x_n)
+    
+    if (k % 3 == 0):
+        u.append(x_n)
+        k = 0
+    if (k % 2 == 0):
+        v.append(x_n)
+        k = k+1
+    else:
+        w.append(x_n)
+        k = k+1
 
 trace = go.Scatter3d(
-    x=t, y=u, z=v,
+    x=u, y=v, z=w,
     marker=dict(
-        size=4,
+        size=1,
         color="#4faab4",
         colorscale='Viridis',
     ),
@@ -37,7 +42,7 @@ layout = dict(
     width=800,
     height=700,
     autosize=False,
-    title='Iris dataset',
+    title='Test espectral 3D de GCL',
     scene=dict(
         xaxis=dict(
             gridcolor='rgb(255, 255, 255)',
@@ -70,10 +75,10 @@ layout = dict(
             )
         ),
         aspectratio=dict(x=1, y=1, z=0.7),
-        aspectmode='manual'
+        aspectmode='manual',        
     ),
 )
 
 fig = dict(data=data, layout=layout)
 
-py.plot(fig, filename='pandas-brownian-motion-3d', height=700)
+py.plot(fig, filename='test-espectral-3d-gcl', height=700)
