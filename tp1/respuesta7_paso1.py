@@ -18,9 +18,10 @@ v = []  # array de nro generado
 
 for i in range(100):
    x_n = generador_congruencial_lineal(x_n)
+   x_n2 = generador_congruencial_lineal(x_n)
    
-   u.append( i ) 
-   v.append( x_n ) 
+   u.append( x_n ) 
+   v.append( x_n2 ) 
 
 trace = go.Scatter(
     x = u,

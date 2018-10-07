@@ -17,16 +17,14 @@ t = []  # array de cantidad
 u = []  # array de cantidad
 v = []  # array de nro generado
 
-for i in range(100):
+for i in range(100000):
    x_n = generador_congruencial_lineal(x_n)
+   x_n2 = generador_congruencial_lineal(x_n)
+   x_n3 = generador_congruencial_lineal(x_n)
    
-   t.append( i ) 
-   u.append( i ) 
-   v.append( x_n ) 
-   
-   print i
-   print x_n
-
+   t.append( x_n ) 
+   u.append( x_n2 ) 
+   v.append( x_n3 ) 
 
 trace = go.Scatter3d(
     x=t, y=u, z=v,
