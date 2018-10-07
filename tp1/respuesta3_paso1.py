@@ -112,7 +112,7 @@ x_n = (90697 + 89563) // 2
 u = []  # array de uniformes
 x = []  # array de inversas
 
-for _ in range(1000):
+for _ in range(100000):
     x_n = generador_congruencial_lineal(x_n)
     u.append(x_n)
 
