@@ -93,7 +93,11 @@ x_n = constante.SEMILLA
 u = []  # array de uniformes
 x = []  # array de inversas
 
+<<<<<<< HEAD:tp1/respuesta3-v1.py
 for _ in range(constante.CANT_EXPERIMENTOS):
+=======
+for _ in range(100000):
+>>>>>>> 9a5be31d20e45a52bff535bd5d6d15d879ead585:tp1/respuesta3_paso1.py
     x_n = generador_congruencial_lineal(x_n)
     u.append(x_n)
 
