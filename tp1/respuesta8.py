@@ -1,10 +1,6 @@
-'''
-Realizar un test Chi 2 a la distribucion empirica implementada en el Ej 6.
-Analizar el resultado para un nivel de significacion 0,01.
-'''
 import scipy.stats as stats
 
-from geometrica_empirica import experimento_geometrica
+from funciones import experimento_geometrica
 
 datos_cargada = []
 datos_cargada = experimento_geometrica(0.3)

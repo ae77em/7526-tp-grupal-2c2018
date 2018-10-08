@@ -3,7 +3,7 @@ import plotly.graph_objs as go
 import plotly.tools as tls
 import matplotlib.pyplot as plt
 
-from geometrica_empirica import experimento_geometrica
+from funciones import experimento_geometrica
 
 def ploteo_histograma(datos, filename):
     plt.hist(datos)

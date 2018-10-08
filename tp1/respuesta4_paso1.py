@@ -5,6 +5,8 @@ import random
 from math import log
 from math import exp
 
+import constante
+
 def funcionH(unNro):
     result = (pow( unNro - 1 , 2) * 1) / 2
     
@@ -30,7 +32,7 @@ def generador_aceptacion_rechazon_variable_normal():
 
 u = []  # array de normales
 
-for _ in range(100000):
+for _ in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_aceptacion_rechazon_variable_normal()
     u.append(x_n)
 

@@ -103,7 +103,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-
-#POR AHORA
-tp1/respuesta3*
+# vscode
 .vscode/

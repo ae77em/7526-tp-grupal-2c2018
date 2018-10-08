@@ -4,7 +4,9 @@ import plotly.tools as tls
 import matplotlib.pyplot as plt
 import numpy as np
 
-from generador_congruencial_lineal import generador_congruencial_lineal
+from funciones import generador_congruencial_lineal
+
+import constante
 
 def generar_histograma(numeros_aleatorios):
     plt.hist(numeros_aleatorios)
@@ -17,10 +19,10 @@ def generar_histograma(numeros_aleatorios):
     py.plot(plotly_fig, filename='histograma-gcl')
 
 ## resolucion de histograma
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 numeros_aleatorios = []
 
-for _ in range(100000):
+for _ in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_congruencial_lineal(x_n)
     numeros_aleatorios.append(x_n)
 

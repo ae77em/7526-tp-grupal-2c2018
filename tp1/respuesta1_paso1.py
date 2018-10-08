@@ -1,3 +1,5 @@
+import constante
+
 def generador_congruencial_lineal(x_n):
    m = 232                     # modulus
    a = 1013904223              # multiplier
@@ -7,7 +9,7 @@ def generador_congruencial_lineal(x_n):
 
    return x
 
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 
 for _ in range(6):
    x_n = generador_congruencial_lineal(x_n)

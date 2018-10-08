@@ -6,16 +6,8 @@ from math import log
 from math import exp
 import scipy.stats as stats
 
-cant = 100000
-
-def generador_congruencial_lineal(x_n):
-    m = 232                     # modulus
-    a = 1013904223              # multiplier
-    c = 1664525                 # increment
-
-    x = float(((a * x_n) + c) % m) / float(m)
-
-    return x
+from funciones import generador_congruencial_lineal
+import constante
 
 def calcularEst(Oi,Ei):
     if Ei == 0:
@@ -23,10 +15,10 @@ def calcularEst(Oi,Ei):
     return ( ( ( Oi - Ei )**2 ) ) / (Ei)
 
 def obtenerProbabilidadDeGap(nroDeGap):
-    return (0.5)*pow(0.5,nroDeGap)*cant
+    return (0.5)*pow(0.5,nroDeGap)*constante.CANT_EXPERIMENTOS
 
 
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 
 gapsPrimerIntervalo = []  # array de nro generado
 contadorGap = 0
@@ -34,7 +26,7 @@ aparecioPrimerNroEnPrimerRango = False
 
 i = 1
 
-while i < cant:
+while i < constante.CANT_EXPERIMENTOS:
     x_n = generador_congruencial_lineal(x_n)
 
     if x_n >= 0.5 and x_n <= 1:

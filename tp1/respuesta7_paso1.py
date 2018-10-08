@@ -2,13 +2,14 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 
 import numpy as np
-from generador_congruencial_lineal import generador_congruencial_lineal
+from funciones import generador_congruencial_lineal
+import constante
 
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 u = []
 v = []  
 
-for i in range(100000):
+for i in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_congruencial_lineal(x_n)
     
     if (i % 2 == 0):

@@ -1,36 +1,18 @@
-'''
-Ejercicio 2
-Utilizando el generador de numeros aleatorios con distribucion uniforme [0,1] implementado en el ejercicio 1 y utilizando
-el metodo de la transformada inversa genere numeros pseudoaleatorios con distribucion exponencial negativa de media
-15.
- * Realizar un histograma de 100.000 valores obtenidos.
- * Calcular la media, varianza y moda de la distribucion obtenida y compararlos con los valores teoricos.
-'''
 import plotly.plotly as py
 import plotly.graph_objs as go
+import numpy as np
 
 from math import log
+from scipy import stats
+from scipy.interpolate import interp1d
 
-# funciones auxiliares
-
-
-def generador_congruencial_lineal(x_n):
-    m = 232                     # modulus
-    a = 1013904223              # multiplier
-    c = 1664525                 # increment
-
-    x = float(((a * x_n) + c) % m) / float(m)
-
-    return x
-
+from funciones import generador_congruencial_lineal
+import constante
 
 def obtenerX(y, y1, y2, x1, x2):
     return x1 + (y - y1)*(x2 - x1) * (1 / (y2 - y1))
 
-
 def obtenerTransfInversa(y):
-    #print y
-
     x = 0
 
     if(y >= 0 and y < 0.0003):
@@ -58,9 +40,8 @@ def obtenerTransfInversa(y):
             x = obtenerX(y, 0.15866, 0.21186, -1, -0.8)
 
     elif(y >= 0.21186 and y < 0.27425):
-            #x = obtenerX(y, 0,21186, 0.27425, -0.8, -0.6)
-            x = 0
-
+            x = obtenerX(y, 0.21186, 0.27425, -0.8, -0.6)
+            
     elif(y >= 0.27425 and y < 0.34458):
             x = obtenerX(y, 0.27425, 0.34458, -0.6, -0.4)
 
@@ -108,20 +89,27 @@ def obtenerTransfInversa(y):
     return x
 
 # Paso 1: Generamos muestras de la variable uniforme U
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 u = []  # array de uniformes
 x = []  # array de inversas
 
-for _ in range(1000):
+for _ in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_congruencial_lineal(x_n)
     u.append(x_n)
 
 #  Paso 2: Aplicar la transformacion inversa
 for i in range(len(u)):
-    x.append( obtenerTransfInversa( u[i] ) )  # Transformacion inversa
+    x.append( obtenerTransfInversa( u[i] ) ) # Transformacion inversa
 
 # Mostramos histograma del resultado
-#print ("x")
-print x
 data = [go.Histogram(x=x)]
-py.plot(data, filename='histograma-inversa')
+py.plot(data, filename='histograma-inversa-normal-v1')
+
+# Mostramos meida, varianza y moda muestrales y teoricos
+media = np.mean(x)
+varianza = np.var(x)
+moda = stats.mode(x).mode[0] # tengo un solo array, i.e. una sola moda
+
+print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(media, varianza, moda))
+print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(0, 1, 0))
+

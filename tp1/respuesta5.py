@@ -1,31 +1,12 @@
-'''
-Utilizando el metodo de la transformada inversa y utilizando el generador de numeros aleatorios implementado en el
-ejercicio 1 genere numeros aleatorios siguiendo la siguiente funcion de distribucion de probabilidad empirica.
-
-Probabilidad    Valor generado
-    .5              1
-    .2              2
-    .1              3
-    .2              5
-
-'''
-
-## funciones auxiliares
-def generador_congruencial_lineal(x_n):
-    m = 232                     # modulus
-    a = 1013904223              # multiplier
-    c = 1664525                 # increment
-
-    x = float(((a * x_n) + c) % m) / float(m)
-
-    return x
+from funciones import generador_congruencial_lineal
+import constante
 
 # genero numero aleatorios uniformes
-x_n = (90697 + 89563) // 2
+x_n = constante.SEMILLA
 uniformes = []
 empiricos = []
 
-for _ in range(100000):
+for _ in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_congruencial_lineal(x_n)
     uniformes.append(x_n)
 

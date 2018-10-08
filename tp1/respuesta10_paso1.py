@@ -9,40 +9,16 @@ from math import sqrt
 import numpy as np
 import scipy.stats as st
 
-
-def funcionH(unNro):
-    result = (pow(unNro - 1, 2) * 1) / 2
-
-    return exp(result)
-
-def generador_aceptacion_rechazon_variable_normal():
-    U = 0
-    count = 0
-    continuar = True
-
-    while(continuar):
-        # genero variable con distribucion exp -1
-        Y = log(random.uniform(0, 1)) * -1
-
-        U = random.uniform(0, 1)
-
-        count = count + 1
-
-        if U <= funcionH(Y):
-            continuar = False
-
-    if U < 0.5:
-        return 5*Y + 35
-    else:
-        return 5*Y*-1 + 35
-
+from funciones import funcionH
+from funciones import generador_aceptacion_rechazon_variable_normal
+import constante
 
 def encontrar_max_distancia():
     maximo = 0
     funcionDistribucionNormal = st.norm(35, 25)
 
     for indice, unaMuestra in enumerate(muestra, start=1):
-        resta = indice/float(cantidadMuestras) - funcionDistribucionNormal.cdf(unaMuestra) 
+        resta = indice/float(constante.CANT_EXPERIMENTOS) - funcionDistribucionNormal.cdf(unaMuestra) 
         
         if resta < 0:
             resta *= -1
@@ -64,9 +40,8 @@ def verificar_hipotesis(maximo,tamanioMuestra):
 #------------------------------------------------------
 
 muestra = []  # array de normales
-cantidadMuestras = 100000
 
-for _ in range(cantidadMuestras):
+for _ in range(constante.CANT_EXPERIMENTOS):
     x_n = generador_aceptacion_rechazon_variable_normal()
     muestra.append(x_n)
 
@@ -78,7 +53,7 @@ maximaDist = encontrar_max_distancia()
 
 print("max x hallado -->  | F(x) - F(x) |: {0} ".format(maximaDist))
 
-parametroDeRechazo = verificar_hipotesis(maximaDist,cantidadMuestras)
+parametroDeRechazo = verificar_hipotesis(maximaDist,constante.CANT_EXPERIMENTOS)
 
 if maximaDist > parametroDeRechazo:
     print("Se aprueba el test")
