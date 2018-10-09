@@ -31,21 +31,21 @@ muestra.sort()
 for indice, unaMuestra in enumerate(muestra, start=1):
     if unaMuestra < 0:
         print unaMuestra
-    x.append( unaMuestra )
-    yEmpirica.append( indice/float(cantidadMuestras) )
-    yReal.append( funcionDistribucionNormal.cdf( unaMuestra ) )
+    x.append(unaMuestra)
+    yEmpirica.append(indice/float(cantidadMuestras))
+    yReal.append(funcionDistribucionNormal.cdf(unaMuestra))
 
 trace0 = go.Scatter(
-    x = x,
-    y = yEmpirica,
-    mode = 'lines+markers',
-    name = 'empirica'
+    x=x,
+    y=yEmpirica,
+    mode='lines+markers',
+    name='empirica'
 )
 trace1 = go.Scatter(
-    x = x,
-    y = yReal,
-    mode = 'lines+markers',
-    name = 'real'
+    x=x,
+    y=yReal,
+    mode='lines+markers',
+    name='real'
 )
 
 data = [trace0, trace1]

@@ -6,7 +6,7 @@ from math import log
 from scipy import stats
 from scipy.interpolate import interp1d
 
-from funciones import generador_congruencial_lineal
+from funciones import gcl_uniforme
 import constante
 # Paso 1: Generamos muestras de la variable uniforme U
 x_n = constante.SEMILLA
@@ -14,7 +14,7 @@ u = []  # array de uniformes
 x = []  # array de inversas
 
 for _ in range(constante.CANT_EXPERIMENTOS):
-    x_n = generador_congruencial_lineal(x_n)
+    x_n = gcl_uniforme(x_n)
     u.append(x_n)
 
 #  Paso 2: Aplicar la transformacion inversa, usando interpolacion lineal, con los rangos dados en apunte

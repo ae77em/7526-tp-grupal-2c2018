@@ -6,7 +6,7 @@ from math import sqrt
 
 import constante
 
-def generador_congruencial_lineal(x_n):
+def gcl_uniforme(x_n):
     m = 232                     # modulus
     a = 1013904223              # multiplier
     c = 1664525                 # increment
@@ -24,7 +24,7 @@ def experimento_geometrica(p):
     for _ in range(constante.CANT_EXPERIMENTOS):
         salio1 = False
         while not salio1:
-            x_n = generador_congruencial_lineal(x_n)
+            x_n = gcl_uniforme(x_n)
             
             if x_n >= 0.0 and x_n < 1-p:
                 empiricos.append(0)

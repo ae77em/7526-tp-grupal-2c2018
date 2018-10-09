@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 from funciones import experimento_geometrica
 
+
 def ploteo_histograma(datos, filename):
     plt.hist(datos)
     plt.title("Histograma Geometrica")
@@ -18,7 +19,7 @@ def ploteo_histograma(datos, filename):
 
 # hago los experimentos
 datos_equilibrada = experimento_geometrica(0.5)
-ploteo_histograma(datos_equilibrada,'histograma-moneda-equilibrada')
+ploteo_histograma(datos_equilibrada, 'histograma-moneda-equilibrada')
 
 datos_cargada = experimento_geometrica(0.3)
-ploteo_histograma(datos_cargada,'histograma-moneda-cargada')
+ploteo_histograma(datos_cargada, 'histograma-moneda-cargada')

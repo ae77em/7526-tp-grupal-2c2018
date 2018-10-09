@@ -6,7 +6,7 @@ from math import log
 from math import exp
 import scipy.stats as stats
 
-from funciones import generador_congruencial_lineal
+from funciones import gcl_uniforme
 import constante
 
 def calcularEst(Oi,Ei):
@@ -27,7 +27,7 @@ aparecioPrimerNroEnPrimerRango = False
 i = 1
 
 while i < constante.CANT_EXPERIMENTOS:
-    x_n = generador_congruencial_lineal(x_n)
+    x_n = gcl_uniforme(x_n)
 
     if x_n >= 0.5 and x_n <= 1:
         gapsPrimerIntervalo.append(contadorGap)

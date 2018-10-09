@@ -4,7 +4,7 @@ import plotly.tools as tls
 import matplotlib.pyplot as plt
 import numpy as np
 
-from funciones import generador_congruencial_lineal
+from funciones import gcl_uniforme
 
 import constante
 
@@ -23,7 +23,7 @@ x_n = constante.SEMILLA
 numeros_aleatorios = []
 
 for _ in range(constante.CANT_EXPERIMENTOS):
-    x_n = generador_congruencial_lineal(x_n)
+    x_n = gcl_uniforme(x_n)
     numeros_aleatorios.append(x_n)
 
 generar_histograma(numeros_aleatorios)

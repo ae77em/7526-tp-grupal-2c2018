@@ -1,6 +1,6 @@
 import constante
 
-def generador_congruencial_lineal(x_n):
+def gcl(x_n):
    m = 232                     # modulus
    a = 1013904223              # multiplier
    c = 1664525                 # increment
@@ -12,5 +12,5 @@ def generador_congruencial_lineal(x_n):
 x_n = constante.SEMILLA
 
 for _ in range(6):
-   x_n = generador_congruencial_lineal(x_n)
+   x_n = gcl(x_n)
    print(x_n)

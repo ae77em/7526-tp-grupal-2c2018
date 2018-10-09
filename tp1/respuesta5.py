@@ -1,4 +1,4 @@
-from funciones import generador_congruencial_lineal
+from funciones import gcl_uniforme
 import constante
 
 # genero numero aleatorios uniformes
@@ -7,7 +7,7 @@ uniformes = []
 empiricos = []
 
 for _ in range(constante.CANT_EXPERIMENTOS):
-    x_n = generador_congruencial_lineal(x_n)
+    x_n = gcl_uniforme(x_n)
     uniformes.append(x_n)
 
 # la funcion definida por la tabla en el enunciado es:

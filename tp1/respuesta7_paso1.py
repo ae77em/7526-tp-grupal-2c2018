@@ -2,16 +2,16 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 
 import numpy as np
-from funciones import generador_congruencial_lineal
+from funciones import gcl_uniforme
 import constante
 
 x_n = constante.SEMILLA
 u = []
-v = []  
+v = []
 
 for i in range(constante.CANT_EXPERIMENTOS):
-    x_n = generador_congruencial_lineal(x_n)
-    
+    x_n = gcl_uniforme(x_n)
+
     if (i % 2 == 0):
         u.append(x_n)
     else:
