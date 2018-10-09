@@ -1,3 +1,4 @@
+# RESPUESTA 7 paso 1
 import plotly.plotly as py
 import plotly.graph_objs as go
 

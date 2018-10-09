@@ -1,3 +1,4 @@
+# RESPUESTA 5
 from funciones import gcl_uniforme
 import constante
 

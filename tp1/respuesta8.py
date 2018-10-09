@@ -1,3 +1,4 @@
+# RESPUESTA 8
 import scipy.stats as stats
 
 from funciones import experimento_geometrica

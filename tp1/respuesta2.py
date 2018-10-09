@@ -1,3 +1,4 @@
+# RESPUESTA 2
 import numpy as np
 from scipy import stats
 from math import log

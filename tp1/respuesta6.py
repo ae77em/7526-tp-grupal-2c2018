@@ -1,3 +1,4 @@
+# RESPUESTA 6
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.tools as tls
