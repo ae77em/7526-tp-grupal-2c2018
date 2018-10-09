@@ -29,7 +29,7 @@ i = 1
 while i < constante.CANT_EXPERIMENTOS:
     x_n = generador_congruencial_lineal(x_n)
 
-    if x_n >= 0.2 and x_n <= 0.6:
+    if x_n >= 0.5 and x_n <= 1:
         gapsPrimerIntervalo.append(contadorGap)
         contadorGap = 0
         i += 1
@@ -78,9 +78,9 @@ print ("D2 : ", Dsquared)
 
 if (Dsquared < t):
     print('''
-    ACEPTAMOS la hipotesis con un error del 5% para el gap test con intervalo [0.2, 0.6].
+    ACEPTAMOS la hipotesis con un error del 5% para el gap test con intervalo [0.5, 1].
     ''')
 else:
     print('''
-    RECHAZAMOS la hipotesis con un error del 5% para el gap test con intervalo [0.2, 0.6].
+    RECHAZAMOS la hipotesis con un error del 5% para el gap test con intervalo [0.5, 1].
     ''')
