@@ -6,6 +6,9 @@ from math import sqrt
 
 import constante
 
+#
+# Retorna un valor entre 0 y 1 usando el algoritmo gcl
+#
 def gcl_uniforme(x_n):
     m = 232                     # modulus
     a = 1013904223              # multiplier
@@ -15,6 +18,9 @@ def gcl_uniforme(x_n):
 
     return x
 
+#
+# Simula 100000 lanzamientos de una moneda con probabilidad p de sacar cara
+#
 def experimento_geometrica(p):
     # genero numero aleatorios uniformes
     x_n = constante.SEMILLA
@@ -23,22 +29,28 @@ def experimento_geometrica(p):
     # hago el experimento
     for _ in range(constante.CANT_EXPERIMENTOS):
         salio1 = False
+        lanzamientos = 0
+        
         while not salio1:
             x_n = gcl_uniforme(x_n)
-            
-            if x_n >= 0.0 and x_n < 1-p:
-                empiricos.append(0)
-            else:
-                empiricos.append(1)
+            lanzamientos = lanzamientos + 1
+
+            if (x_n >= 1-p) and (x_n < 1):
                 salio1 = True
+                empiricos.append(lanzamientos)
 
     return empiricos
 
+#
+# Funcion H
+#
 def funcionH(unNro):
     result = (pow(unNro - 1, 2) * 1) / 2
-
     return exp(result)
 
+#
+# Algoritmo de aceptacion/rechazo
+#
 def generador_aceptacion_rechazon_variable_normal():
     U = 0
     continuar = True

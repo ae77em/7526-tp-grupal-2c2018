@@ -28,12 +28,17 @@ x = f_inversa(u)  # Transformacion inversa
 
 # Mostramos histograma del resultado
 data = [go.Histogram(x=x)]
-py.plot(data, filename='histograma-inversa-normal-v2')
+#py.plot(data, filename='histograma-inversa-normal-v2')
 
 # Mostramos meida, varianza y moda muestrales y teoricos
 media = np.mean(x)
 varianza = np.var(x)
-moda = stats.mode(x).mode[0] # tengo un solo array, i.e. una sola moda
+moda = stats.mode(x) # tengo un solo array, i.e. una sola moda
+
+numbers = sorted(x)
+mode = max(numbers, key=lambda n: numbers.count(n))
+
+print(mode)
 
 print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(media, varianza, moda))
 print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(0, 1, 0))
