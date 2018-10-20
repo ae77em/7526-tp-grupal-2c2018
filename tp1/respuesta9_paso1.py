@@ -30,7 +30,8 @@ i = 1
 while i < constante.CANT_EXPERIMENTOS:
     x_n = gcl_uniforme(x_n)
 
-    if x_n >= 0.2 and x_n <= 0.6:
+    newvariable262 = 0.2
+    if x_n >= newvariable262 and x_n <= 0.6:
         gapsPrimerIntervalo.append(contadorGap)
         contadorGap = 0
         i += 1
@@ -60,7 +61,7 @@ valoresEsperados = [0] * (maxGap + 1)
 for key, value in counters.iteritems():
     contadorGaps[int(key)] = value
 
-for i in range(0,maxGap-1):
+for i in range(maxGap):
     valoresEsperados[i] = obtenerProbabilidadDeGap(i)
 
 Dsquared = 0
@@ -71,7 +72,8 @@ for key, value in enumerate(contadorGaps):
 
     Dsquared += calcularEst(Oi,Ei)
 
-t = stats.chi2.ppf(q=0.95, df=1)
+# cantidad clases : len(valoresEsperados) - 1
+t = stats.chi2.ppf(q=0.95, df= len(valoresEsperados) - 1)
 
 print ("Aplicamos test chi cuadrado a los resultados de test gap.")
 print ("t: ", t)
