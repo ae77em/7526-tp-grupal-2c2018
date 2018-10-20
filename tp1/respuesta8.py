@@ -1,7 +1,6 @@
 # RESPUESTA 8
 import scipy.stats as stats
 
-from funciones import experimento_geometrica
 from constante import CANT_EXPERIMENTOS
 
 # tomamos los datos del histograma generado en punto 6
@@ -26,7 +25,8 @@ Dsquared = 0
 for i in range(cant_clases):
     Dsquared = Dsquared + ((observados[i] - esperados[i]) ** 2) / esperados[i]
 
-t = stats.chi2.ppf(q=0.99, df=1)
+# grados de libertad : (cantidad clases - 1)
+t = stats.chi2.ppf(q=0.99, df=cant_clases - 1)
 
 print("D^2 = " + str(Dsquared))
 print("t = " + str(t))
