@@ -11,7 +11,7 @@ import numpy as np
 import scipy.stats as st
 
 from funciones import funcionH
-from funciones import generador_aceptacion_rechazon_variable_normal
+from funciones import normal_por_aceptacion_rechazo
 import constante
 
 
@@ -24,7 +24,7 @@ funcionDistribucionNormal = st.norm(35, 25)
 cantidadMuestras = constante.CANT_EXPERIMENTOS
 
 for _ in range(cantidadMuestras):
-    x_n = generador_aceptacion_rechazon_variable_normal()
+    x_n = normal_por_aceptacion_rechazo()
     muestra.append(x_n)
 
 muestra.sort()

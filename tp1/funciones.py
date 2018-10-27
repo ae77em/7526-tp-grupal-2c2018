@@ -3,6 +3,8 @@ import random
 from math import log
 from math import exp
 from math import sqrt
+from math import e
+from math import pi
 
 import constante
 
@@ -51,19 +53,36 @@ def funcionH(unNro):
 #
 # Algoritmo de aceptacion/rechazo
 #
-def generador_aceptacion_rechazon_variable_normal():
-    U = 0
-    continuar = True
 
-    while(continuar):
-        # genero variable con distribucion exp -1
-        Y = -log(random.uniform(0, 1))
-        U = random.uniform(0, 1)
+def normal_por_aceptacion_rechazo(media=0, de=1):
+    """
+    Calcula la normal con 100000 simulaciones, usando el metodo de aceptacion/rechazo.
+    
+    Parametros:
+    
+    media: el valor de la media de la normal a calcular
+    
+    de: el valor de la desviacion estandar de la normal a calcular
+    """
+    c = sqrt(2*e/pi)
+    cant = constante.CANT_EXPERIMENTOS
+    j = 0
+    u = [0] * constante.CANT_EXPERIMENTOS # array de normales
 
-        if U <= funcionH(Y):
-            continuar = False
+    while(j < cant):
+        # Utilizamos el metodo de la transformada inversa para calcular la exponencial
+        u1 = random.uniform(0, 1)
+        r1 = -1*log(1-u1)
+        u2 = random.uniform(0, 1)
 
-    if U < 0.5:
-        return 5*Y + 35
-    else:
-        return -5*Y + 35
+        if (2*pow(e, -1*pow(r1, 2)/2)/sqrt(2*pi)/(pow(e,-r1)*c) >= u2):
+            u3 = random.uniform(0, 1)
+            
+            if (u3 > 0.5):
+                u[j] = float(de) * r1 + media
+            else:
+                u[j] = -float(de) * r1 + media
+            
+            j = j+1
+
+    return u

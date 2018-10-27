@@ -11,7 +11,7 @@ import numpy as np
 import scipy.stats as st
 
 from funciones import funcionH
-from funciones import generador_aceptacion_rechazon_variable_normal
+from funciones import normal_por_aceptacion_rechazo
 import constante
 
 
@@ -45,7 +45,7 @@ def verificar_hipotesis(maximo, tamanioMuestra):
 muestra = []  # array de normales
 
 for _ in range(constante.CANT_EXPERIMENTOS):
-    x_n = generador_aceptacion_rechazon_variable_normal()
+    x_n = normal_por_aceptacion_rechazo()
     muestra.append(x_n)
 
 # ordeno las muestras de menor a mayor
