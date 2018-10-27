@@ -15,23 +15,18 @@ from funciones import normal_por_aceptacion_rechazo
 import constante
 
 
-muestra = []  # array de normales
 x = []  # array de normales
 yEmpirica = []  # array de normales
 yReal = []  # array de normales
 
-funcionDistribucionNormal = st.norm(35, 25)
+funcionDistribucionNormal = st.norm(35, 5)
+
 cantidadMuestras = constante.CANT_EXPERIMENTOS
 
-for _ in range(cantidadMuestras):
-    x_n = normal_por_aceptacion_rechazo()
-    muestra.append(x_n)
-
+muestra = normal_por_aceptacion_rechazo(35, 5)
 muestra.sort()
 
 for indice, unaMuestra in enumerate(muestra, start=1):
-    if unaMuestra < 0:
-        print unaMuestra
     x.append(unaMuestra)
     yEmpirica.append(indice/float(cantidadMuestras))
     yReal.append(funcionDistribucionNormal.cdf(unaMuestra))
@@ -40,15 +35,23 @@ trace0 = go.Scatter(
     x=x,
     y=yEmpirica,
     mode='lines+markers',
-    name='empirica'
+    name='empirica',    
+    marker = dict(
+          color = 'rgb(231, 99, 250, 0.5)',
+          size = 0.1
+        )
 )
 trace1 = go.Scatter(
     x=x,
     y=yReal,
     mode='lines+markers',
-    name='real'
+    name='real',
+    marker = dict(
+          color = 'rgba(17, 157, 255, 0.5)',
+          size = 0.1
+        )
 )
 
 data = [trace0, trace1]
 
-py.plot(data, filename='normal empirica vs real')
+py.plot(data, filename='test-smirnov-normal-empirica-vs-real')

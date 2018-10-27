@@ -33,12 +33,7 @@ data = [go.Histogram(x=x)]
 # Mostramos media, varianza y moda muestrales y teoricos
 media = np.mean(x)
 varianza = np.var(x)
-moda = stats.mode(x) # tengo un solo array, i.e. una sola moda
-
-numbers = sorted(x)
-mode = max(numbers, key=lambda n: numbers.count(n))
-
-print(mode)
+moda = max(set(x.tolist()), key=x.tolist().count)
 
 print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(media, varianza, moda))
 print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(0, 1, 0))

@@ -17,7 +17,7 @@ import constante
 
 def encontrar_max_distancia():
     maximo = 0
-    funcionDistribucionNormal = st.norm(35, 25)
+    funcionDistribucionNormal = st.norm(35, 5)
 
     for indice, unaMuestra in enumerate(muestra, start=1):
         resta = indice/float(constante.CANT_EXPERIMENTOS) - \
@@ -42,11 +42,7 @@ def verificar_hipotesis(maximo, tamanioMuestra):
     return sqrt(radicando)
 
 
-muestra = []  # array de normales
-
-for _ in range(constante.CANT_EXPERIMENTOS):
-    x_n = normal_por_aceptacion_rechazo()
-    muestra.append(x_n)
+muestra = normal_por_aceptacion_rechazo(media=35, de=5)
 
 # ordeno las muestras de menor a mayor
 muestra.sort()
@@ -56,8 +52,7 @@ maximaDist = encontrar_max_distancia()
 
 print("max x hallado -->  | F(x) - F(x) |: {0} ".format(maximaDist))
 
-parametroDeRechazo = verificar_hipotesis(
-    maximaDist, constante.CANT_EXPERIMENTOS)
+parametroDeRechazo = verificar_hipotesis(maximaDist, constante.CANT_EXPERIMENTOS)
 
 if maximaDist > parametroDeRechazo:
     print("Se aprueba el test")

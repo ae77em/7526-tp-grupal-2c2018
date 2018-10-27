@@ -30,9 +30,7 @@ py.plot(data, filename='histograma-inversa-exponencial')
 # Mostramos media, varianza y moda muestrales y teoricos
 media = np.mean(x)
 varianza = np.var(x)
-moda = stats.mode(x).mode[0]  # tengo un solo array, i.e. una sola moda
+moda = max(set(x), key=x.count)  
 
-print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(
-    media, varianza, moda))
-print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(
-    15, 15*15, 0))
+print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(media, varianza, moda))
+print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(15, 15*15, 0))
