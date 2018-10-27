@@ -1,3 +1,4 @@
+# FUNCIONES
 import random
 
 from math import log
@@ -86,3 +87,4 @@ def normal_por_aceptacion_rechazo(media=0, de=1):
             j = j+1
 
     return u
+

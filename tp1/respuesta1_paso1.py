@@ -1,3 +1,4 @@
+# RESPUESTA 1 paso 1
 import constante
 
 def gcl(x_n):
