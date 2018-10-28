@@ -23,7 +23,7 @@ esperados.append(pUltimo * n)
 
 Dsquared = 0
 for i in range(cant_clases):
-    Dsquared = Dsquared + ((observados[i] - esperados[i]) ** 2) / esperados[i]
+    Dsquared += ((observados[i] - esperados[i]) ** 2) / esperados[i]
 
 # grados de libertad : (cantidad clases - 1)
 t = stats.chi2.ppf(q=0.99, df=cant_clases - 1)

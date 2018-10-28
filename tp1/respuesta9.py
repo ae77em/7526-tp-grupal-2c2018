@@ -22,48 +22,46 @@ def obtenerProbabilidadDeGap(piso, techo, nroDeGap):
     return (pNroDeGap * ((1-pNroDeGap) ** nroDeGap))
 
 
-def evaluar_gap_test(piso, techo):
+def gap_test(alfa, beta):
     x_n = constante.SEMILLA
 
-    gapsPrimerIntervalo = []  # array de nro generado
-    contadorGap = 0
-
-    i = 1
+    gaps = []  # array de nro generado
+    gap = 0
+    i = 0
 
     while i < constante.CANT_EXPERIMENTOS:
         x_n = gcl_uniforme(x_n)
 
-        if x_n > piso and x_n < techo:
-            gapsPrimerIntervalo.append(contadorGap)
-            contadorGap = 0
-            i = i + 1
+        if ((x_n<alfa) or (x_n>=beta)):
+            gap = gap + 1
         else:
-            contadorGap = contadorGap + 1
+            gaps.append(gap)
+            gap = 0
+            i = i + 1
 
-    maxGap = 0
+    maxGap = max(gaps)
     counters = {}
 
-    for unGap in gapsPrimerIntervalo:
+    for unGap in gaps:
         if str(unGap) in counters:
-            counters[str(unGap)] = counters[str(unGap)] + 1
+            counters[str(unGap)] = counters[str(unGap)]
         else:
-            counters[str(unGap)] = 1
-
-        if maxGap < unGap:
-            maxGap = unGap
+            counters[str(unGap)] = 0
 
     # creo array del contenido como tantos gaps existan
-    contadorGaps = [0] * (maxGap + 1)
-
-    # creo array para valores esperados
-    valoresEsperados = [0] * (maxGap + 1)
-
+    contadorGaps = [0] * (maxGap+1)
     for key, value in counters.iteritems():
+        print(key)
         contadorGaps[int(key)] = value
 
-    for i in range(maxGap):
-        valoresEsperados[i] = obtenerProbabilidadDeGap(
-            piso, techo, i) * constante.CANT_EXPERIMENTOS
+    print("contadorGaps", contadorGaps, len(contadorGaps))
+
+    # creo array para valores esperados
+    valoresEsperados = [0] * (maxGap)
+    for i in range(maxGap+1):
+        valoresEsperados[i] = obtenerProbabilidadDeGap(alfa, beta, i) * constante.CANT_EXPERIMENTOS
+
+    print("valoresEsperados", valoresEsperados, len(valoresEsperados))
 
     Dsquared = 0
 
@@ -81,11 +79,11 @@ def evaluar_gap_test(piso, techo):
 
     if (Dsquared < t):
         print("ACEPTAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(
-            piso, techo))
+            alfa, beta))
     else:
         print("RECHAZAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(
-            piso, techo))
+            alfa, beta))
 
 
-evaluar_gap_test(0.2, 0.6)
-evaluar_gap_test(0.5, 1)
+gap_test(0.2, 0.6)
+gap_test(0.5, 1)
