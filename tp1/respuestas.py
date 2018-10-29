@@ -58,6 +58,7 @@ def funcionH(unNro):
 #
 # Algoritmo de aceptacion/rechazo
 #
+
 def normal_por_aceptacion_rechazo(media=0, de=1):
     """
     Calcula la normal con 100000 simulaciones, usando el metodo de aceptacion/rechazo.
@@ -91,6 +92,125 @@ def normal_por_aceptacion_rechazo(media=0, de=1):
 
     return u
 
+# RESPUESTA 10 paso 1
+import plotly.plotly as py
+import plotly.graph_objs as go
+import random
+
+from math import log
+from math import exp
+from math import sqrt
+
+import numpy as np
+import scipy.stats as st
+
+from funciones import funcionH
+from funciones import normal_por_aceptacion_rechazo
+import constante
+
+
+def encontrar_max_distancia():
+    maximo = 0
+    funcionDistribucionNormal = st.norm(35, 5)
+
+    for indice, unaMuestra in enumerate(muestra, start=1):
+        resta = indice/float(constante.CANT_EXPERIMENTOS) - \
+            funcionDistribucionNormal.cdf(unaMuestra)
+
+        if resta < 0:
+            resta *= -1
+
+        if resta > maximo:
+            maximo = resta
+
+    return maximo
+
+
+def verificar_hipotesis(maximo, tamanioMuestra):
+    exponente = -1 * 2 * tamanioMuestra * 0.01 * 0.01
+
+    alpha = 1 - exp(exponente)
+
+    radicando = (-1 * (1 / float(2 * tamanioMuestra))) * log(alpha / float(2))
+
+    return sqrt(radicando)
+
+
+muestra = normal_por_aceptacion_rechazo(media=35, de=5)
+
+# ordeno las muestras de menor a mayor
+muestra.sort()
+
+# busco maxima distancia
+maximaDist = encontrar_max_distancia()
+
+print("max x hallado -->  | F(x) - F(x) |: {0} ".format(maximaDist))
+
+parametroDeRechazo = verificar_hipotesis(maximaDist, constante.CANT_EXPERIMENTOS)
+
+if maximaDist > parametroDeRechazo:
+    print("Se aprueba el test")
+    print("q = {0} > {1}").format(maximaDist, parametroDeRechazo)
+else:
+    print("No se aprueba el test")
+    print("q = {0} < {1}").format(maximaDist, parametroDeRechazo)
+# RESPUESTA 10 paso 2
+import plotly.plotly as py
+import plotly.graph_objs as go
+import random
+
+from math import log
+from math import exp
+from math import sqrt
+
+import numpy as np
+import scipy.stats as st
+
+from funciones import funcionH
+from funciones import normal_por_aceptacion_rechazo
+import constante
+
+
+x = []  # array de normales
+yEmpirica = []  # array de normales
+yReal = []  # array de normales
+
+funcionDistribucionNormal = st.norm(35, 5)
+
+cantidadMuestras = constante.CANT_EXPERIMENTOS
+
+muestra = normal_por_aceptacion_rechazo(35, 5)
+muestra.sort()
+
+for indice, unaMuestra in enumerate(muestra, start=1):
+    x.append(unaMuestra)
+    yEmpirica.append(indice/float(cantidadMuestras))
+    yReal.append(funcionDistribucionNormal.cdf(unaMuestra))
+
+trace0 = go.Scatter(
+    x=x,
+    y=yEmpirica,
+    mode='lines+markers',
+    name='empirica',    
+    marker = dict(
+          color = 'rgb(231, 99, 250, 0.5)',
+          size = 0.1
+        )
+)
+trace1 = go.Scatter(
+    x=x,
+    y=yReal,
+    mode='lines+markers',
+    name='real',
+    marker = dict(
+          color = 'rgba(17, 157, 255, 0.5)',
+          size = 0.1
+        )
+)
+
+data = [trace0, trace1]
+
+py.plot(data, filename='test-smirnov-normal-empirica-vs-real')
 # RESPUESTA 1 paso 1
 import constante
 
@@ -332,6 +452,7 @@ moda = max(set(x.tolist()), key=x.tolist().count)
 print("Media muestral: {0} Varianza muestral: {1} Moda muestral: {2}".format(media, varianza, moda))
 print("Media teorica:  {0} Varianza teorica:  {1} Moda teorica:  {2}".format(0, 1, 0))
 
+# RESPUESTA 4
 import random
 import statistics as st
 from math import e, exp, log, pi, sqrt
@@ -547,7 +668,7 @@ esperados.append(pUltimo * n)
 
 Dsquared = 0
 for i in range(cant_clases):
-    Dsquared = Dsquared + ((observados[i] - esperados[i]) ** 2) / esperados[i]
+    Dsquared += ((observados[i] - esperados[i]) ** 2) / esperados[i]
 
 # grados de libertad : (cantidad clases - 1)
 t = stats.chi2.ppf(q=0.99, df=cant_clases - 1)
@@ -567,7 +688,68 @@ else:
     RECHAZAMOS que la distribucion empirica es una buena aproximacion 
     a la distribucion geometrica con p = 0.5, con un error del 1%.
     ''')
-# RESPUESTA 9 paso 2
+
+# RESPUESTA 9 bis
+import scipy.stats as stats
+
+import constante
+from funciones import gcl_uniforme
+
+def gap_test(alfa=0, beta=1):
+    gaps = [0] * constante.CANT_EXPERIMENTOS
+    i=0
+    gap=0
+    x_n = gcl_uniforme(constante.SEMILLA)
+
+    while (i < constante.CANT_EXPERIMENTOS):
+        if ((x_n < alfa) or (x_n >= beta)):
+            gap += 1                 
+        else:
+            gaps[i] = gap + 1
+            i += 1
+            gap = 0
+        
+        x_n = gcl_uniforme(x_n)
+
+    p = beta - alfa
+    gapMax = max(gaps)
+
+    # agrupo en 11 clases (de la 0 a la 10)
+    observed = [0] * 11
+    for i in range(10):
+        observed[i] = gaps.count(i+1)
+
+    for i in range(10, gapMax+1):
+        observed[10] += gaps.count(i)
+
+    expected = [0] * 11
+    for i in range(10):
+        expected[i] = p * ((1-p)**(i)) * constante.CANT_EXPERIMENTOS
+
+    for i in range(10, gapMax+1):
+        expected[10] += p * ((1-p)**(i-1)) * constante.CANT_EXPERIMENTOS
+
+    print("observed", observed)
+    print("expected", expected)
+
+    Dsquared, p = stats.chisquare(observed, f_exp=expected)
+
+    t = stats.chi2.ppf(q=0.95, df=10)
+
+    print ("Aplicamos test chi cuadrado a los resultados de test gap.")
+    print ("t: " + str(t))
+    print ("D^2 : " + str(Dsquared))
+
+    if (Dsquared < t):
+        print("ACEPTAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(alfa, beta))
+    else:
+        print("RECHAZAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(alfa, beta))
+
+
+gap_test(0.5, 1)
+gap_test(0.2, 0.6)
+    
+# RESPUESTA 9
 import plotly.plotly as py
 import plotly.graph_objs as go
 import random
@@ -591,48 +773,46 @@ def obtenerProbabilidadDeGap(piso, techo, nroDeGap):
     return (pNroDeGap * ((1-pNroDeGap) ** nroDeGap))
 
 
-def evaluar_gap_test(piso, techo):
+def gap_test(alfa, beta):
     x_n = constante.SEMILLA
 
-    gapsPrimerIntervalo = []  # array de nro generado
-    contadorGap = 0
-
-    i = 1
+    gaps = []  # array de nro generado
+    gap = 0
+    i = 0
 
     while i < constante.CANT_EXPERIMENTOS:
         x_n = gcl_uniforme(x_n)
 
-        if x_n > piso and x_n < techo:
-            gapsPrimerIntervalo.append(contadorGap)
-            contadorGap = 0
-            i = i + 1
+        if ((x_n<alfa) or (x_n>=beta)):
+            gap = gap + 1
         else:
-            contadorGap = contadorGap + 1
+            gaps.append(gap)
+            gap = 0
+            i = i + 1
 
-    maxGap = 0
+    maxGap = max(gaps)
     counters = {}
 
-    for unGap in gapsPrimerIntervalo:
+    for unGap in gaps:
         if str(unGap) in counters:
-            counters[str(unGap)] = counters[str(unGap)] + 1
+            counters[str(unGap)] = counters[str(unGap)]
         else:
-            counters[str(unGap)] = 1
-
-        if maxGap < unGap:
-            maxGap = unGap
+            counters[str(unGap)] = 0
 
     # creo array del contenido como tantos gaps existan
-    contadorGaps = [0] * (maxGap + 1)
-
-    # creo array para valores esperados
-    valoresEsperados = [0] * (maxGap + 1)
-
+    contadorGaps = [0] * (maxGap)
     for key, value in counters.iteritems():
+        print(key)
         contadorGaps[int(key)] = value
 
+    print("contadorGaps", contadorGaps, len(contadorGaps))
+
+    # creo array para valores esperados
+    valoresEsperados = [0] * (maxGap)
     for i in range(maxGap):
-        valoresEsperados[i] = obtenerProbabilidadDeGap(
-            piso, techo, i) * constante.CANT_EXPERIMENTOS
+        valoresEsperados[i] = obtenerProbabilidadDeGap(alfa, beta, i) * constante.CANT_EXPERIMENTOS
+
+    print("valoresEsperados", valoresEsperados, len(valoresEsperados))
 
     Dsquared = 0
 
@@ -650,132 +830,11 @@ def evaluar_gap_test(piso, techo):
 
     if (Dsquared < t):
         print("ACEPTAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(
-            piso, techo))
+            alfa, beta))
     else:
         print("RECHAZAMOS la hipotesis con un error del 5% para el gap test con intervalo [{0}, {1}].".format(
-            piso, techo))
+            alfa, beta))
 
 
-evaluar_gap_test(0.2, 0.6)
-evaluar_gap_test(0.5, 1)
-
-# RESPUESTA 10 paso 1
-import plotly.plotly as py
-import plotly.graph_objs as go
-import random
-
-from math import log
-from math import exp
-from math import sqrt
-
-import numpy as np
-import scipy.stats as st
-
-from funciones import funcionH
-from funciones import normal_por_aceptacion_rechazo
-import constante
-
-
-def encontrar_max_distancia():
-    maximo = 0
-    funcionDistribucionNormal = st.norm(35, 5)
-
-    for indice, unaMuestra in enumerate(muestra, start=1):
-        resta = indice/float(constante.CANT_EXPERIMENTOS) - \
-            funcionDistribucionNormal.cdf(unaMuestra)
-
-        if resta < 0:
-            resta *= -1
-
-        if resta > maximo:
-            maximo = resta
-
-    return maximo
-
-
-def verificar_hipotesis(maximo, tamanioMuestra):
-    exponente = -1 * 2 * tamanioMuestra * 0.01 * 0.01
-
-    alpha = 1 - exp(exponente)
-
-    radicando = (-1 * (1 / float(2 * tamanioMuestra))) * log(alpha / float(2))
-
-    return sqrt(radicando)
-
-
-muestra = normal_por_aceptacion_rechazo(media=35, de=5)
-
-# ordeno las muestras de menor a mayor
-muestra.sort()
-
-# busco maxima distancia
-maximaDist = encontrar_max_distancia()
-
-print("max x hallado -->  | F(x) - F(x) |: {0} ".format(maximaDist))
-
-parametroDeRechazo = verificar_hipotesis(maximaDist, constante.CANT_EXPERIMENTOS)
-
-if maximaDist > parametroDeRechazo:
-    print("Se aprueba el test")
-    print("q = {0} > {1}").format(maximaDist, parametroDeRechazo)
-else:
-    print("No se aprueba el test")
-    print("q = {0} < {1}").format(maximaDist, parametroDeRechazo)
-
-# RESPUESTA 10 paso 2
-import plotly.plotly as py
-import plotly.graph_objs as go
-import random
-
-from math import log
-from math import exp
-from math import sqrt
-
-import numpy as np
-import scipy.stats as st
-
-from funciones import funcionH
-from funciones import normal_por_aceptacion_rechazo
-import constante
-
-
-x = []  # array de normales
-yEmpirica = []  # array de normales
-yReal = []  # array de normales
-
-funcionDistribucionNormal = st.norm(35, 5)
-
-cantidadMuestras = constante.CANT_EXPERIMENTOS
-
-muestra = normal_por_aceptacion_rechazo(35, 5)
-muestra.sort()
-
-for indice, unaMuestra in enumerate(muestra, start=1):
-    x.append(unaMuestra)
-    yEmpirica.append(indice/float(cantidadMuestras))
-    yReal.append(funcionDistribucionNormal.cdf(unaMuestra))
-
-trace0 = go.Scatter(
-    x=x,
-    y=yEmpirica,
-    mode='lines+markers',
-    name='empirica',    
-    marker = dict(
-          color = 'rgb(231, 99, 250, 0.5)',
-          size = 0.1
-        )
-)
-trace1 = go.Scatter(
-    x=x,
-    y=yReal,
-    mode='lines+markers',
-    name='real',
-    marker = dict(
-          color = 'rgba(17, 157, 255, 0.5)',
-          size = 0.1
-        )
-)
-
-data = [trace0, trace1]
-
-py.plot(data, filename='test-smirnov-normal-empirica-vs-real')
+gap_test(0.2, 0.6)
+gap_test(0.5, 1)

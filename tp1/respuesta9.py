@@ -1,4 +1,4 @@
-# RESPUESTA 9 paso 2
+# RESPUESTA 9
 import plotly.plotly as py
 import plotly.graph_objs as go
 import random
@@ -49,7 +49,7 @@ def gap_test(alfa, beta):
             counters[str(unGap)] = 0
 
     # creo array del contenido como tantos gaps existan
-    contadorGaps = [0] * (maxGap+1)
+    contadorGaps = [0] * (maxGap)
     for key, value in counters.iteritems():
         print(key)
         contadorGaps[int(key)] = value
@@ -58,7 +58,7 @@ def gap_test(alfa, beta):
 
     # creo array para valores esperados
     valoresEsperados = [0] * (maxGap)
-    for i in range(maxGap+1):
+    for i in range(maxGap):
         valoresEsperados[i] = obtenerProbabilidadDeGap(alfa, beta, i) * constante.CANT_EXPERIMENTOS
 
     print("valoresEsperados", valoresEsperados, len(valoresEsperados))

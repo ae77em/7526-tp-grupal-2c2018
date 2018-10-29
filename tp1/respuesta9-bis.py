@@ -1,3 +1,4 @@
+# RESPUESTA 9 bis
 import scipy.stats as stats
 
 import constante
