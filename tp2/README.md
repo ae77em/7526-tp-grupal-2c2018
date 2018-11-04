@@ -15,4 +15,12 @@ Resolución de trabajo práctico grupal de Simulación - FIUBA - 2c2018
 
 `python -m pip install -U simpy --user`
 
+* scipy
+
+`python -m pip install -U scipy --user`
+
+* sympy
+
+`python -m pip install -U sympy --user`
+
 (*) La opción `--user` indica que se instala para el usuario actual. Me daba problemas usando el IDE cuando instalaba cosas como super user.
