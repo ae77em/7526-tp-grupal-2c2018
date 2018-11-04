@@ -1,3 +1,7 @@
+"""
+Punto 3b
+
+"""
 from scipy.integrate import odeint
 from scipy import arange
 from mpl_toolkits.mplot3d import Axes3D
@@ -54,5 +58,7 @@ ax.set_zlabel('z')
 
 show()
 
+"""
+FIN punto 3b
 
-
+"""

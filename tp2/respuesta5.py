@@ -1,6 +1,6 @@
 """
 
-Punto 5 a
+Punto 5 b
 
 """
 import random
@@ -8,7 +8,6 @@ import simpy
 import numpy
 
 RANDOM_SEED = 99999
-queues = [[],[],[],[],[],[]]
 
 class Dto:
     def __init__(self):
@@ -82,39 +81,57 @@ def request(env, name, server):
 
         print('%s leaves the server %d at %.2f.' % (name, server.number_of_server, env.now))
     
-def setup(env, dtos):
+def setup(env, dtos, simulation_policy):
     # Create the server
     servers = [Request(env, dtos[0], 1), Request(env, dtos[1], 2), Request(env, dtos[2], 3), Request(env, dtos[3], 4), Request(env, dtos[4], 5)]
             
     # Create more customers while the simulation is running
     i = 0
+    j = 0
     while True:
         t_inter = random.expovariate(1.0/45.0) # msec
 
         yield env.timeout(t_inter)
         i += 1
-        servers.sort(key=lambda x: x.queue_data.current_people)
         
-        server = servers[0]
+        if (simulation_policy == 'RR'):
+            server = servers[j]
+            j += 1        
+            if ( j > 4): 
+                j = 0
+        else:
+            servers.sort(key=lambda x: x.queue_data.current_people)
+            server = servers[0]
+
         env.process(request(env, 'Request %d' % i, server))
+        
 
 # Setup and start the simulation
-print('SERVER')
-random.seed(RANDOM_SEED)  # This helps reproducing the results
+def run_simulation(simulation_policy):
+    print('SERVER')
+    random.seed(RANDOM_SEED)  # This helps reproducing the results
 
-# Create an environment and start the setup process
-dtos = [Dto(), Dto(), Dto(), Dto(), Dto()]
-env = simpy.Environment()
-env.process(setup(env, dtos))
-env.run(until=1000000)
+    # Create an environment and start the setup process
+    dtos = [Dto(), Dto(), Dto(), Dto(), Dto()]
+    env = simpy.Environment()
+    env.process(setup(env, dtos, simulation_policy))
+    env.run(until=1000000)
 
-print("First unoccupied")
-for dto in dtos:
-    print("Max time waited: %.2f msec." % dto.max_time_waited)
-    print("Max queue length: %d people." % dto.max_people)
+    if (simulation_policy == "RR"):
+        print("Round Robin")
+    else:
+        print("Less occupied")
+
+    for dto in dtos:
+        print("Max time waited: %.2f msec." % dto.max_time_waited)
+        print("Max queue length: %d people." % dto.max_people)
+
+# Run simulations
+run_simulation("RR")
+run_simulation("LO")
 
 """
-FIN Punto 5 a
+FIN Punto 5 b
 
 """
 

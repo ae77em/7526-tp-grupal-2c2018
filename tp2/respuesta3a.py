@@ -1,3 +1,7 @@
+"""
+Punto 3a
+
+"""
 import sympy
     
 x, y, z = sympy.symbols('x, y, z', negative=False)
@@ -14,3 +18,8 @@ ZEqual = sympy.Eq(Z, 0)
 equilibria = sympy.solve( (XEqual, YEqual, ZEqual), x, y, z )
 print("Puntos de equilibrio")
 print(equilibria)
+
+"""
+FIN punto 3a
+
+"""
