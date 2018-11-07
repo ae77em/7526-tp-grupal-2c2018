@@ -15,6 +15,10 @@ Resolución de trabajo práctico grupal de Simulación - FIUBA - 2c2018
 
 `python -m pip install -U simpy --user`
 
+* numpy
+
+`python -m pip install -U numpy --user`
+
 * scipy
 
 `python -m pip install -U scipy --user`
