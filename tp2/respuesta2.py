@@ -38,13 +38,12 @@ I = numpy.matrix([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
 Pn = numpy.zeros(states, dtype=float)
 numberOfRequests = numpy.zeros(N)
 
-P0 = I * P
-
+Pn = I * P
 n = 1
 while n <= N:
-    Pn = P0 * P**n
-    numberOfRequests[n-1] = states - Pn.tolist().count(0.0) - 1
-    print (Pn)
-    #print ("# Quantity of request in system after %i hours -> %d" % (n, numberOfRequests[n-1]))
+    print(Pn)
+    numberOfRequests[n-1] = numpy.count_nonzero(Pn) - 1
+    print ("# Quantity of request in system after %i seconds -> %d" % (n, numberOfRequests[n-1]))
+    Pn = Pn * P
     n += 1
 
