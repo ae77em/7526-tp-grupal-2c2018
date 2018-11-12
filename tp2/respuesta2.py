@@ -19,21 +19,32 @@ d. Realice un histograma mostrando cuantas veces el sistema estuvo en cada estad
 e. Determine el % de tiempo que el servidor se encuentra sin procesar solicitudes.
 """
 
-import numpy as np
+import numpy
 from numpy import linalg
-
-P = np.loadtxt("respuesta2_matriz.csv", delimiter=",")
 
 def steady_state_prop(p):
     dim = p.shape[0]
-    q = (p-np.eye(dim))
-    ones = np.ones(dim)
-    q = np.c_[q,ones]
-    QTQ = np.dot(q, q.T)
-    bQT = np.ones(dim)
-    return np.linalg.solve(QTQ,bQT)
+    q = (p-numpy.eye(dim))
+    ones = numpy.ones(dim)
+    q = numpy.c_[q,ones]
+    QTQ = numpy.dot(q, q.T)
+    bQT = numpy.ones(dim)
+    return numpy.linalg.solve(QTQ,bQT)
 
-steady = steady_state_prop(np.matrix(P))
-print("steady state")
-print(steady)
+states = 30
+N = 1000
+P = numpy.loadtxt("respuesta2_matriz.csv", delimiter=",")
+I = numpy.matrix([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]])
+Pn = numpy.zeros(states, dtype=float)
+numberOfRequests = numpy.zeros(N)
+
+P0 = I * P
+
+n = 1
+while n <= N:
+    Pn = P0 * P**n
+    numberOfRequests[n-1] = states - Pn.tolist().count(0.0) - 1
+    print (Pn)
+    #print ("# Quantity of request in system after %i hours -> %d" % (n, numberOfRequests[n-1]))
+    n += 1
 
