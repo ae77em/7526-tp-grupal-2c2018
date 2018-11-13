@@ -1,26 +1,21 @@
-"""
-Un servidor recibe solicitudes las cuales son procesadas de una por vez en el orden de llegada (polItica FIFO).
-
-Se determino que en 10 milisegundos existe una probabilidad p = 1.0/40.0 que llegue una nueva solicitud y una probabilidad
-q = 1.0/30.0 que una solicitud termine de ser procesada y deje el sistema.
-
-Se desea estudiar la cantidad de solicitudes en el servidor considerando tanto las que estan en cola esperando ser
-procesadas como la solicitud que esta siendo procesada.
-
-a. Determine la matriz de transicion de estados explicando como se obtiene la misma.
-
-b. Simule la evolucion del sistema a lo largo de 1.0.000 segundos. Suponga que el
-sistema puede tener como maximo 30.0 estados posibles y que el servidor comienza sin estar procesando solicitudes.
-
-c. Realice un grafico mostrando la cantidad de solicitudes en el servidor en cada instante de tiempo.
-
-d. Realice un histograma mostrando cuantas veces el sistema estuvo en cada estado.
-
-e. Determine el % de tiempo que el servidor se encuentra sin procesar solicitudes.
-"""
-
 import numpy
 from numpy import linalg
+import matplotlib.pyplot as plt
+
+def get_next_state(xt):
+    xtplus1 = 0
+
+    if (xt == 0):
+        a = numpy.arange(xt, xt+2)
+        xtplus1 = numpy.random.choice(a, p=[39.0/40.0, 1.0/40.0])
+    elif (xt == 29):
+        a = numpy.arange(xt, xt+2)
+        xtplus1 = numpy.random.choice(numpy.arange(xt, xt-2), p=[29.0/30.0, 1.0/30.0])
+    else:
+        a = numpy.arange(xt-1, xt+2)
+        xtplus1 = numpy.random.choice(numpy.arange(xt-1, xt+2), p=[1.0/30.0, 113.0/120.0, 1.0/40.0])
+
+    return xtplus1
 
 def steady_state_prop(p):
     dim = p.shape[0]
@@ -32,18 +27,36 @@ def steady_state_prop(p):
     return numpy.linalg.solve(QTQ,bQT)
 
 states = 30
-N = 1000
+N = 1000 * (1000/10) # 1000 secs == 10000 miliseconds
 P = numpy.loadtxt("respuesta2_matriz.csv", delimiter=",")
 I = numpy.matrix([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]])
 Pn = numpy.zeros(states, dtype=float)
-numberOfRequests = numpy.zeros(N)
 
 Pn = I * P
 n = 1
-while n <= N:
-    print(Pn)
-    numberOfRequests[n-1] = numpy.count_nonzero(Pn) - 1
-    print ("# Quantity of request in system after %i seconds -> %d" % (n, numberOfRequests[n-1]))
-    Pn = Pn * P
-    n += 1
 
+while n <= N:
+    Pn = Pn * P
+    n += 1    
+    
+steady = steady_state_prop(P)
+
+# imprimo porcentaje de tiempo en que el sistema estuvo vacio
+print ('Porcentaje en 0: %.8f%%' % (float(steady[0] * 100)))
+
+states = []
+xn = 0
+
+for i in range(N):
+    xn = get_next_state(xn)
+    states.append(xn)
+
+# ploteo valores en cada momento
+plt.plot(states)
+plt.show()
+
+# ploteo histograma
+plt.xticks(numpy.arange(30))
+plt.hist(states, bins=31) 
+plt.title("Cantidad de veces en cada estado cada 10 mseg durante 1000 segundos")
+plt.show()
